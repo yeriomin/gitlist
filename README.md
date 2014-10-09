@@ -1,6 +1,10 @@
 # GitList: an elegant git repository viewer
 [![Build Status](https://secure.travis-ci.org/klaussilveira/gitlist.png)](http://travis-ci.org/klaussilveira/gitlist)
 
+## Reason for forking
+GitList is a tool for viewing git repos, as the name implies. But with a triial modifiaction it can create and fork repos too. That eliminates any need for creating repos using a ssh connection to my homeserver and lets me use lightweight php tool instead of other popular tools like gitlab which need a different environment and are a lot slower.
+
+## Original README.md
 GitList is an elegant and modern web interface for interacting with multiple git repositories. It allows you to browse repositories using your favorite browser, viewing files under different revisions, commit history, diffs. It also generates RSS feeds for each repository, allowing you to stay up-to-date with the latest changes anytime, anywhere. GitList was written in PHP, on top of the [Silex](http://silex.sensiolabs.org/) microframework and powered by the Twig template engine. This means that GitList is easy to install and easy to customize. Also, the GitList gorgeous interface was made possible due to [Bootstrap](http://twitter.github.com/bootstrap/). 
 
 ## Features
