@@ -46,7 +46,7 @@ class Client extends BaseClient
         }
 
         $allRepositories = array_unique($allRepositories, SORT_REGULAR);
-        uksort($allRepositories, function($k1, $k2) {
+        uksort($allRepositories, function ($k1, $k2) {
             return strtolower($k2)<strtolower($k1);
         });
 
@@ -206,4 +206,3 @@ class Client extends BaseClient
         return new Repository($path, $this);
     }
 }
-

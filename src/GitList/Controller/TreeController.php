@@ -48,32 +48,35 @@ class TreeController implements ControllerProviderInterface
           ->convert('commitishPath', 'escaper.argument:escape')
           ->bind('tree');
 
-        $route->post('{repo}/tree/{branch}/search', function (Request $request, $repo, $branch = '', $tree = '') use ($app) {
-            $repository = $app['git']->getRepositoryFromName($app['git.repos'], $repo);
-            if (!$branch) {
-                $branch = $repository->getHead();
+        $route->post(
+            '{repo}/tree/{branch}/search',
+            function (Request $request, $repo, $branch = '', $tree = '') use ($app) {
+                $repository = $app['git']->getRepositoryFromName($app['git.repos'], $repo);
+                if (!$branch) {
+                    $branch = $repository->getHead();
+                }
+
+                $query = $request->get('query');
+                $breadcrumbs = array(array('dir' => 'Search results for: ' . $query, 'path' => ''));
+                $results = $repository->searchTree($query, $branch);
+
+                return $app['twig']->render('search.twig', array(
+                    'results'        => $results,
+                    'repo'           => $repo,
+                    'branch'         => $branch,
+                    'path'           => $tree,
+                    'breadcrumbs'    => $breadcrumbs,
+                    'branches'       => $repository->getBranches(),
+                    'tags'           => $repository->getTags(),
+                    'query'          => $query
+                ));
             }
+        )->assert('repo', $app['util.routing']->getRepositoryRegex())
+         ->assert('branch', $app['util.routing']->getBranchRegex())
+         ->convert('branch', 'escaper.argument:escape')
+         ->bind('search');
 
-            $query = $request->get('query');
-            $breadcrumbs = array(array('dir' => 'Search results for: ' . $query, 'path' => ''));
-            $results = $repository->searchTree($query, $branch);
-
-            return $app['twig']->render('search.twig', array(
-                'results'        => $results,
-                'repo'           => $repo,
-                'branch'         => $branch,
-                'path'           => $tree,
-                'breadcrumbs'    => $breadcrumbs,
-                'branches'       => $repository->getBranches(),
-                'tags'           => $repository->getTags(),
-                'query'          => $query
-            ));
-        })->assert('repo', $app['util.routing']->getRepositoryRegex())
-          ->assert('branch', $app['util.routing']->getBranchRegex())
-          ->convert('branch', 'escaper.argument:escape')
-          ->bind('search');
-
-        $route->get('{repo}/{format}ball/{branch}', function($repo, $format, $branch) use ($app) {
+        $route->get('{repo}/{format}ball/{branch}', function ($repo, $format, $branch) use ($app) {
             $repository = $app['git']->getRepositoryFromName($app['git.repos'], $repo);
 
             $tree = $repository->getBranchTree($branch);
@@ -101,14 +104,14 @@ class TreeController implements ControllerProviderInterface
           ->bind('archive');
 
 
-        $route->get('{repo}/{branch}/', function($repo, $branch) use ($app, $treeController) {
+        $route->get('{repo}/{branch}/', function ($repo, $branch) use ($app, $treeController) {
             return $treeController($repo, $branch);
         })->assert('repo', $app['util.routing']->getRepositoryRegex())
           ->assert('branch', $app['util.routing']->getBranchRegex())
           ->convert('branch', 'escaper.argument:escape')
           ->bind('branch');
 
-        $route->get('{repo}/', function($repo) use ($app, $treeController) {
+        $route->get('{repo}/', function ($repo) use ($app, $treeController) {
             return $treeController($repo);
         })->assert('repo', $app['util.routing']->getRepositoryRegex())
           ->bind('repository');
@@ -116,4 +119,3 @@ class TreeController implements ControllerProviderInterface
         return $route;
     }
 }
-

@@ -73,4 +73,3 @@ class BlobController implements ControllerProviderInterface
         return $route;
     }
 }
-

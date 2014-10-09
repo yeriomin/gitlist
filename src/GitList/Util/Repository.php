@@ -167,10 +167,12 @@ class Repository
     public function getReadme($repository, $branch = null, $path = "")
     {
         if ($branch === null) {
-           $branch = $repository->getHead();
+            $branch = $repository->getHead();
         }
 
-        if ($path != "") $path = "$path/";
+        if ($path != "") {
+            $path = "$path/";
+        }
 
         $files = $repository->getTree($path != "" ? "$branch:$path" : $branch)->output();
 
@@ -182,8 +184,12 @@ class Repository
                 );
             }
         }
-		// No contextual readme, try to catch the main one if we are in deeper context
-		if ($path != "") return $this->getReadme($repository, $branch, "");
+
+        // No contextual readme, try to catch the main one if we are in deeper context
+        if ($path != "") {
+            return $this->getReadme($repository, $branch, "");
+        }
+
         return array();
     }
 
@@ -226,4 +232,3 @@ class Repository
         return array($branch, $tree);
     }
 }
-

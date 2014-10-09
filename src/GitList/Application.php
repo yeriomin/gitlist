@@ -71,7 +71,7 @@ class Application extends SilexApplication
             return $twig;
         }));
 
-        $this['escaper.argument'] = $this->share(function() {
+        $this['escaper.argument'] = $this->share(function () {
             return new Escaper\ArgumentEscaper();
         });
 
@@ -103,7 +103,9 @@ class Application extends SilexApplication
     {
         $mod = 1000;
         $units = array('B', 'kB', 'MB', 'GB');
-        for($i = 0; $size > $mod; $i++) $size /= $mod;
+        for ($i = 0; $size > $mod; $i++) {
+            $size /= $mod;
+        }
         return round($size, 2) . $units[$i];
     }
 
