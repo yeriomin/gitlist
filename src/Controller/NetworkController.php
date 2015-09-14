@@ -47,9 +47,8 @@ class NetworkController implements ControllerProviderInterface
                         'author' => array(
                             'name' => $commit->getAuthor()->getName(),
                             'email' => $commit->getAuthor()->getEmail(),
-                            // due to the lack of a inbuilt javascript md5 mechanism,
-                            // build the full avatar url on the php side
-                            'image' => 'http://gravatar.com/avatar/' . md5(
+                            // due to the lack of a inbuilt javascript md5 mechanism, build the full avatar url on the php side
+                            'image' => '//gravatar.com/avatar/' . md5(
                                 strtolower($commit->getAuthor()->getEmail())
                             ) . '?s=40'
                         )
@@ -78,20 +77,17 @@ class NetworkController implements ControllerProviderInterface
                             'nextPage' => null,
                             'start' => null,
                             'commits' => $jsonFormattedCommits
-                        ),
-                        200
-                    );
+                            ), 200
+                        );
                 }
 
-                return $app->json(
-                    array(
-                        'repo' => $repo,
-                        'commitishPath' => $commitishPath,
-                        'nextPage' => $nextPageUrl,
-                        'start' => $commits[0]->getHash(),
-                        'commits' => $jsonFormattedCommits
-                    ),
-                    200
+                return $app->json( array(
+                    'repo' => $repo,
+                    'commitishPath' => $commitishPath,
+                    'nextPage' => $nextPageUrl,
+                    'start' => $commits[0]->getHash(),
+                    'commits' => $jsonFormattedCommits
+                    ), 200
                 );
             }
         )->assert('repo', $app['util.routing']->getRepositoryRegex())

@@ -1,5 +1,6 @@
 {
     "name": "klaussilveira/gitlist",
+    "description": "An elegant git repository viewer",
     "require": {
         "silex/silex": "1.*",
         "twig/twig": "1.*",
@@ -19,8 +20,8 @@
     },
     "minimum-stability": "stable",
     "autoload": {
-        "psr-0": {
-            "GitList": "src/"
+        "psr-4": {
+            "GitList\\": "src/"
         }
     }
 }

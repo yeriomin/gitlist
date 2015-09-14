@@ -174,7 +174,7 @@ class Repository
             $path = "$path/";
         }
 
-        $files = $repository->getTree($path != "" ? "$branch:$path" : $branch)->output();
+        $files = $repository->getTree($path != "" ? "$branch:\"$path\"" : $branch)->output();
 
         foreach ($files as $file) {
             if (preg_match('/^readme*/i', $file['name'])) {
